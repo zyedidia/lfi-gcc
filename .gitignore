@@ -6,3 +6,4 @@
 /build-gcc
 /build-binutils
 *-toolchain
+/a.out

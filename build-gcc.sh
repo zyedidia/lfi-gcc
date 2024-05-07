@@ -51,6 +51,10 @@ make install-target-libgcc
 
 cd ../musl-1.2.4
 
+make clean
+
+CC=$PREFIX/bin/aarch64_lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/aarch64_lfi-linux-musl/lib --libdir=$PREFIX/lib/gcc/aarch64_lfi-linux-musl/13.2.0 --includedir=$PREFIX/aarch64_lfi-linux-musl/include
+
 # now we can build libc (requires libgcc)
 make
 make install
