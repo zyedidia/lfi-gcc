@@ -3,6 +3,8 @@
 # don't forget the $PWD!!
 # usage: ./build-musl.sh $PWD/prefix
 
+set -ex
+
 PREFIX=$1
 
 export CC=$PREFIX/bin/aarch64_lfi-linux-musl-gcc

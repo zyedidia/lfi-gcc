@@ -2,6 +2,8 @@
 
 # usage: ./build-gcc.sh PREFIX
 
+set -ex
+
 PREFIX=$1
 export CFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x23 -ffixed-x24 -ffixed-x30 -fPIC"
 export CXXFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x23 -ffixed-x24 -ffixed-x30 -fPIC"

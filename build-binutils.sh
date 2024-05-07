@@ -2,6 +2,8 @@
 
 # usage: build-binutils PREFIX
 
+set -ex
+
 PREFIX=$1
 
 mkdir -p build-binutils
