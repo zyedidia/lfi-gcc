@@ -1,0 +1,3 @@
+#!/bin/sh
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+lfi-as -flfi-as $DIR/internal-aarch64_lfi-linux-musl-as "$@"

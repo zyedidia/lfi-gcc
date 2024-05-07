@@ -1,0 +1,6 @@
+*.tar.gz
+/musl-*
+/gcc
+/binutils
+/build-gcc
+/build-binutils
