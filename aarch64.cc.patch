@@ -1,0 +1,12 @@
+--- gcc/gcc/config/aarch64/aarch64.cc	2023-07-27 08:13:04.000000000 +0000
++++ gcc/gcc/config/aarch64/aarch64.cc	2024-05-04 06:34:46.360226033 +0000
+@@ -8432,7 +8432,8 @@
+   /* ... and any callee saved register that dataflow says is live.  */
+   for (regno = R0_REGNUM; regno <= R30_REGNUM; regno++)
+     if (df_regs_ever_live_p (regno)
+-	&& !fixed_regs[regno]
++	&& (regno == R30_REGNUM 
++        || !fixed_regs[regno])
+ 	&& (regno == R30_REGNUM
+ 	    || !crtl->abi->clobbers_full_reg_p (regno)))
+       frame.reg_offset[regno] = SLOT_REQUIRED;
