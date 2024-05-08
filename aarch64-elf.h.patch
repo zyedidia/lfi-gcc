@@ -1,0 +1,12 @@
+--- gcc/gcc/config/aarch64/aarch64-elf.h	2024-05-08 22:31:02.912057824 +0000
++++ gcc/gcc/config/aarch64/aarch64-elf.h	2024-05-08 22:30:55.044053994 +0000
+@@ -75,9 +75,6 @@
+     switch (GET_MODE (BODY))						\
+       {									\
+       case E_QImode:							\
+-	asm_fprintf (STREAM, "\t.byte\t(%LL%d - %LLrtx%d) / 4\n",	\
+-		     VALUE, REL);					\
+-	break;								\
+       case E_HImode:							\
+ 	asm_fprintf (STREAM, "\t.2byte\t(%LL%d - %LLrtx%d) / 4\n",	\
+ 		     VALUE, REL);					\

@@ -1,0 +1,13 @@
+--- gcc/gcc/config/aarch64/aarch64.cc	2024-05-08 22:30:36.104044743 +0000
++++ gcc/gcc/config/aarch64/aarch64.cc	2024-05-08 22:30:45.196049189 +0000
+@@ -12993,8 +12993,8 @@
+   static const char *const patterns[4][2] =
+   {
+     {
+-      "ldrb\t%w3, [%0,%w1,uxtw]",
+-      "add\t%3, %4, %w3, sxtb #2"
++      "ldrh\t%w3, [%0,%w1,uxtw #1]",
++      "add\t%3, %4, %w3, sxth #2"
+     },
+     {
+       "ldrh\t%w3, [%0,%w1,uxtw #1]",
