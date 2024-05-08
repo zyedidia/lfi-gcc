@@ -32,10 +32,7 @@ cp ../wrappers/aarch64_lfi-linux-musl-gcc  $PREFIX/bin
 cp ../wrappers/aarch64_lfi-linux-musl-g++  $PREFIX/bin
 cp ../wrappers/gcc $PREFIX/aarch64_lfi-linux-musl/bin
 
-# copy headers from musl to $PREFIX/aarch64_lfi-linux-musl/include
-cp -r ../musl-include $PREFIX/aarch64_lfi-linux-musl/include
-
-# build musl
+# install musl headers
 
 cd ../musl-1.2.4
 make clean
@@ -49,7 +46,13 @@ cd ../build-gcc
 make all-target-libgcc
 make install-target-libgcc
 
-cd ../musl-1.2.4
+cd ..
+
+cp musl-custom/memset.S musl-1.2.4/src/string/aarch64/memset.S
+cp musl-custom/getopt.c musl-1.2.4/src/misc/getopt.c
+cp musl-custom/crti.s musl-1.2.4/crt/aarch64/crti.s
+
+cd musl-1.2.4
 
 make clean
 
