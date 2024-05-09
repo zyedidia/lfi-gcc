@@ -16,3 +16,6 @@ tar -xf $GCC.tar.xz
 mv $GCC gcc
 rm $GCC.tar.xz
 
+MUSL=musl-1.2.4
+wget https://musl.libc.org/releases/$MUSL.tar.gz
+tar -xf $MUSL.tar.gz
