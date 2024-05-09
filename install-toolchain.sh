@@ -4,6 +4,8 @@
 
 set -e
 
+PREFIX=$1
+
 if [ ! -d gcc ]; then
     ./download.sh
     ./setup.sh
