@@ -1,6 +1,6 @@
 *.tar.gz
 /musl-*
-!/musl-include
+!/musl-custom
 /gcc
 /binutils
 /build-gcc
