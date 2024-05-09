@@ -27,3 +27,14 @@ $ ./build-all.sh $PWD/aarch64_lfi-toolchain # must be an absolute path
 
 After waiting for the build to complete, you will find a toolchain installed
 into `./aarch64_lfi-toolchain`.
+
+You should now be able to run the test programs in LFI.
+
+```
+$ ./aarch64_lfi/bin/aarch64_lfi-linux-musl-gcc test.c -O2
+$ lfi-run ./a.out
+Hello world: 0x1e00060000
+$ ./aarch64_lfi/bin/aarch64_lfi-linux-musl-g++ test.cc -O2
+$ lfi-run ./a.out
+done!
+```
