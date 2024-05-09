@@ -20,9 +20,7 @@ Before building, you must install the LFI tools `lfi-as` and `lfi-leg-arm64`.
 Then you can begin the build process:
 
 ```
-$ ./download.sh
-$ ./setup.sh
-$ ./build-all.sh $PWD/aarch64_lfi-toolchain # must be an absolute path
+$ ./install-toolchain.sh $PWD/aarch64_lfi-toolchain # must be an absolute path
 ```
 
 After waiting for the build to complete, you will find a toolchain installed
