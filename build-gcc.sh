@@ -22,7 +22,7 @@ cd build-gcc
     --with-pkgversion="LFI"
 
 make all-gcc
-make install-gcc
+make install-strip-gcc
 
 mv $PREFIX/bin/aarch64_lfi-linux-musl-gcc $PREFIX/bin/internal-aarch64_lfi-linux-musl-gcc
 mv $PREFIX/bin/aarch64_lfi-linux-musl-g++ $PREFIX/bin/internal-aarch64_lfi-linux-musl-g++

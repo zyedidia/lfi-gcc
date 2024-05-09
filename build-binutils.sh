@@ -15,7 +15,7 @@ cd build-binutils
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
 make
-make install
+make install-strip
 
 cd ..
 
