@@ -8,7 +8,7 @@ PREFIX=$1
 
 mkdir -p build-binutils
 cd build-binutils
-../binutils/configure --target=aarch64_lfi-linux-musl \
+../binutils/configure --target=x86_64-linux-musl \
     --disable-docs \
     --disable-nls \
     --disable-multilib \
@@ -19,8 +19,8 @@ make install-strip
 
 cd ..
 
-mv $PREFIX/bin/aarch64_lfi-linux-musl-as $PREFIX/bin/internal-aarch64_lfi-linux-musl-as
-mv $PREFIX/aarch64_lfi-linux-musl/bin/as $PREFIX/aarch64_lfi-linux-musl/bin/internal-as
+mv $PREFIX/bin/x86_64-linux-musl-as $PREFIX/bin/internal-x86_64-linux-musl-as
+mv $PREFIX/x86_64-linux-musl/bin/as $PREFIX/x86_64-linux-musl/bin/internal-as
 
-cp wrappers/aarch64_lfi-linux-musl-as  $PREFIX/bin
-cp wrappers/as $PREFIX/aarch64_lfi-linux-musl/bin
+cp wrappers/x86_64-linux-musl-as  $PREFIX/bin
+cp wrappers/as $PREFIX/x86_64-linux-musl/bin

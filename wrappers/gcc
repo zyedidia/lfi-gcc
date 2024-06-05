@@ -1,3 +1,3 @@
 #!/bin/sh
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-$DIR/../../bin/internal-aarch64_lfi*-gcc -ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x25 -ffixed-x30 -fPIC -static-pie -z separate-code "$@"
+$DIR/../../bin/internal-x86_64*-gcc -falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -static-pie -z separate-code "$@"

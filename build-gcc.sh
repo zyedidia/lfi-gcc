@@ -5,12 +5,12 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x25 -ffixed-x30 -fPIC"
-export CXXFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x25 -ffixed-x30 -fPIC"
+export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC"
+export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC"
 
 mkdir -p build-gcc
 cd build-gcc
-../gcc/configure --target=aarch64_lfi-linux-musl \
+../gcc/configure --target=x86_64-linux-musl \
     --disable-docs \
     --disable-bootstrap \
     --disable-libssp \
@@ -24,19 +24,19 @@ cd build-gcc
 make all-gcc
 make install-strip-gcc
 
-mv $PREFIX/bin/aarch64_lfi-linux-musl-gcc $PREFIX/bin/internal-aarch64_lfi-linux-musl-gcc
-mv $PREFIX/bin/aarch64_lfi-linux-musl-g++ $PREFIX/bin/internal-aarch64_lfi-linux-musl-g++
-# mv $PREFIX/aarch64_lfi-linux-musl/bin/gcc $PREFIX/aarch64_lfi-linux-musl/bin/internal-gcc
+mv $PREFIX/bin/x86_64-linux-musl-gcc $PREFIX/bin/internal-x86_64-linux-musl-gcc
+mv $PREFIX/bin/x86_64-linux-musl-g++ $PREFIX/bin/internal-x86_64-linux-musl-g++
+# mv $PREFIX/x86_64-linux-musl/bin/gcc $PREFIX/x86_64-linux-musl/bin/internal-gcc
 #
-cp ../wrappers/aarch64_lfi-linux-musl-gcc  $PREFIX/bin
-cp ../wrappers/aarch64_lfi-linux-musl-g++  $PREFIX/bin
-cp ../wrappers/gcc $PREFIX/aarch64_lfi-linux-musl/bin
+cp ../wrappers/x86_64-linux-musl-gcc  $PREFIX/bin
+cp ../wrappers/x86_64-linux-musl-g++  $PREFIX/bin
+cp ../wrappers/gcc $PREFIX/x86_64-linux-musl/bin
 
 # install musl headers
 
 cd ../musl-1.2.4
 make clean
-CC=$PREFIX/bin/aarch64_lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/aarch64_lfi-linux-musl/lib --libdir=$PREFIX/lib/gcc/aarch64_lfi-linux-musl/13.2.0 --includedir=$PREFIX/aarch64_lfi-linux-musl/include
+CC=$PREFIX/bin/x86_64-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/x86_64-linux-musl/lib --libdir=$PREFIX/lib/gcc/x86_64-linux-musl/13.2.0 --includedir=$PREFIX/x86_64-linux-musl/include
 # first install musl headers
 make install-headers
 
@@ -48,15 +48,13 @@ make install-target-libgcc
 
 cd ..
 
-cp musl-custom/memset.S musl-1.2.4/src/string/aarch64/memset.S
 cp musl-custom/getopt.c musl-1.2.4/src/misc/getopt.c
-cp musl-custom/crti.s musl-1.2.4/crt/aarch64/crti.s
 
 cd musl-1.2.4
 
 make clean
 
-CC=$PREFIX/bin/aarch64_lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/aarch64_lfi-linux-musl/lib --libdir=$PREFIX/lib/gcc/aarch64_lfi-linux-musl/13.2.0 --includedir=$PREFIX/aarch64_lfi-linux-musl/include
+CC=$PREFIX/bin/x86_64-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/x86_64-linux-musl/lib --libdir=$PREFIX/lib/gcc/x86_64-linux-musl/13.2.0 --includedir=$PREFIX/x86_64-linux-musl/include --disable-shared
 
 # now we can build libc (requires libgcc)
 make
@@ -66,7 +64,7 @@ make install
 
 cd ../build-gcc
 
-cp -r $PREFIX/lib/gcc/aarch64_lfi-linux-musl/13.2.0/* gcc
+cp -r $PREFIX/lib/gcc/x86_64-linux-musl/13.2.0/* gcc
 
 # now build libstdc++ (requires libc and libgcc)
 make all-target-libstdc++-v3
