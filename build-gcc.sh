@@ -69,3 +69,8 @@ cp -r $PREFIX/lib/gcc/x86_64-linux-musl/13.2.0/* gcc
 # now build libstdc++ (requires libc and libgcc)
 make all-target-libstdc++-v3
 make install-target-libstdc++-v3
+
+# add linux/limits.h
+
+mkdir -p $PREFIX/x86_64-linux-musl/include/linux
+cp /usr/include/linux/limits.h $PREFIX/x86_64-linux-musl/include/linux
