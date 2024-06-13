@@ -1,0 +1,3 @@
+#!/bin/sh
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+$DIR/internal-gfortran -ftls-model=local-exec -falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -static-pie -z separate-code "$@"

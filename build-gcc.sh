@@ -5,8 +5,8 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC"
-export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC"
+export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec"
+export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec"
 
 mkdir -p build-gcc
 cd build-gcc
@@ -16,7 +16,7 @@ cd build-gcc
     --disable-libssp \
     --disable-multilib \
     --disable-shared \
-    --enable-languages=c,c++ \
+    --enable-languages=c,c++,fortran \
     --enable-lto \
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
@@ -26,11 +26,11 @@ make install-strip-gcc
 
 mv $PREFIX/bin/x86_64-linux-musl-gcc $PREFIX/bin/internal-x86_64-linux-musl-gcc
 mv $PREFIX/bin/x86_64-linux-musl-g++ $PREFIX/bin/internal-x86_64-linux-musl-g++
-# mv $PREFIX/x86_64-linux-musl/bin/gcc $PREFIX/x86_64-linux-musl/bin/internal-gcc
-#
+mv $PREFIX/bin/x86_64-linux-musl-gfortran $PREFIX/bin/internal-x86_64-linux-musl-gfortran
+
 cp ../wrappers/x86_64-linux-musl-gcc  $PREFIX/bin
 cp ../wrappers/x86_64-linux-musl-g++  $PREFIX/bin
-cp ../wrappers/gcc $PREFIX/x86_64-linux-musl/bin
+cp ../wrappers/x86_64-linux-musl-gfortran  $PREFIX/bin
 
 # install musl headers
 
@@ -74,3 +74,11 @@ make install-target-libstdc++-v3
 
 mkdir -p $PREFIX/x86_64-linux-musl/include/linux
 cp /usr/include/linux/limits.h $PREFIX/x86_64-linux-musl/include/linux
+
+# now build libgfortran
+
+mv ./gcc/gfortran ./gcc/internal-gfortran
+cp ../wrappers/gfortran ./gcc/gfortran
+
+make all-target-libgfortran
+make install-target-libgfortran
