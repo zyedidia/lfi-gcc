@@ -5,8 +5,8 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec"
-export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec"
+export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec -fno-plt"
+export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec -fno-plt"
 
 mkdir -p build-gcc
 cd build-gcc
