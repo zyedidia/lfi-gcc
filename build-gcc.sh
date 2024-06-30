@@ -5,8 +5,8 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec -fno-plt"
-export CXXFLAGS_FOR_TARGET="-falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -ftls-model=local-exec -fno-plt"
+export CFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
+export CXXFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
 
 mkdir -p build-gcc
 cd build-gcc
@@ -28,9 +28,12 @@ mv $PREFIX/bin/x86_64-linux-musl-gcc $PREFIX/bin/internal-x86_64-linux-musl-gcc
 mv $PREFIX/bin/x86_64-linux-musl-g++ $PREFIX/bin/internal-x86_64-linux-musl-g++
 mv $PREFIX/bin/x86_64-linux-musl-gfortran $PREFIX/bin/internal-x86_64-linux-musl-gfortran
 
-cp ../wrappers/x86_64-linux-musl-gcc  $PREFIX/bin
-cp ../wrappers/x86_64-linux-musl-g++  $PREFIX/bin
-cp ../wrappers/x86_64-linux-musl-gfortran  $PREFIX/bin
+lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-gcc > $PREFIX/bin/x86_64-linux-musl-gcc
+lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-g++ > $PREFIX/bin/x86_64-linux-musl-g++
+lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-gfortran > $PREFIX/bin/x86_64-linux-musl-gfortran
+chmod +x $PREFIX/bin/x86_64-linux-musl-gcc
+chmod +x $PREFIX/bin/x86_64-linux-musl-g++
+chmod +x $PREFIX/bin/x86_64-linux-musl-gfortran
 
 # install musl headers
 
@@ -78,7 +81,8 @@ cp /usr/include/linux/limits.h $PREFIX/x86_64-linux-musl/include/linux
 # now build libgfortran
 
 mv ./gcc/gfortran ./gcc/internal-gfortran
-cp ../wrappers/gfortran ./gcc/gfortran
+lfi-wrap -toolchain=gcc -compiler=gfortran > ./gcc/gfortran
+chmod +x ./gcc/gfortran
 
 make all-target-libgfortran
 make install-target-libgfortran
