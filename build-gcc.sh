@@ -5,8 +5,8 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x30 -fPIC"
-export CXXFLAGS_FOR_TARGET="-ffixed-x21 -ffixed-x18 -ffixed-x22 -ffixed-x30 -fPIC"
+export CFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
+export CXXFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
 
 mkdir -p build-gcc
 cd build-gcc
@@ -26,11 +26,13 @@ make install-strip-gcc
 
 mv $PREFIX/bin/aarch64_lfi-linux-musl-gcc $PREFIX/bin/internal-aarch64_lfi-linux-musl-gcc
 mv $PREFIX/bin/aarch64_lfi-linux-musl-g++ $PREFIX/bin/internal-aarch64_lfi-linux-musl-g++
-# mv $PREFIX/aarch64_lfi-linux-musl/bin/gcc $PREFIX/aarch64_lfi-linux-musl/bin/internal-gcc
-#
-cp ../wrappers/aarch64_lfi-linux-musl-gcc  $PREFIX/bin
-cp ../wrappers/aarch64_lfi-linux-musl-g++  $PREFIX/bin
-cp ../wrappers/gcc $PREFIX/aarch64_lfi-linux-musl/bin
+
+lfi-wrap -toolchain=gcc -compiler=aarch64_lfi-linux-musl-gcc > $PREFIX/bin/aarch64_lfi-linux-musl-gcc
+lfi-wrap -toolchain=gcc -compiler=aarch64_lfi-linux-musl-g++ > $PREFIX/bin/aarch64_lfi-linux-musl-g++
+lfi-wrap -toolchain=gcc -compiler=aarch64_lfi-linux-musl-gfortran > $PREFIX/bin/aarch64_lfi-linux-musl-gfortran
+chmod +x $PREFIX/bin/aarch64_lfi-linux-musl-gcc
+chmod +x $PREFIX/bin/aarch64_lfi-linux-musl-g++
+chmod +x $PREFIX/bin/aarch64_lfi-linux-musl-gfortran
 
 # install musl headers
 
