@@ -10,7 +10,7 @@ export CXXFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
 
 mkdir -p build-gcc
 cd build-gcc
-../gcc/configure --target=x86_64-linux-musl \
+../gcc/configure --target=$ARCH-linux-musl \
     --disable-docs \
     --disable-bootstrap \
     --disable-libssp \
@@ -24,22 +24,22 @@ cd build-gcc
 make all-gcc
 make install-strip-gcc
 
-mv $PREFIX/bin/x86_64-linux-musl-gcc $PREFIX/bin/internal-x86_64-linux-musl-gcc
-mv $PREFIX/bin/x86_64-linux-musl-g++ $PREFIX/bin/internal-x86_64-linux-musl-g++
-mv $PREFIX/bin/x86_64-linux-musl-gfortran $PREFIX/bin/internal-x86_64-linux-musl-gfortran
+mv $PREFIX/bin/$ARCH-linux-musl-gcc $PREFIX/bin/internal-$ARCH-linux-musl-gcc
+mv $PREFIX/bin/$ARCH-linux-musl-g++ $PREFIX/bin/internal-$ARCH-linux-musl-g++
+mv $PREFIX/bin/$ARCH-linux-musl-gfortran $PREFIX/bin/internal-$ARCH-linux-musl-gfortran
 
-lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-gcc > $PREFIX/bin/x86_64-linux-musl-gcc
-lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-g++ > $PREFIX/bin/x86_64-linux-musl-g++
-lfi-wrap -toolchain=gcc -compiler=x86_64-linux-musl-gfortran > $PREFIX/bin/x86_64-linux-musl-gfortran
-chmod +x $PREFIX/bin/x86_64-linux-musl-gcc
-chmod +x $PREFIX/bin/x86_64-linux-musl-g++
-chmod +x $PREFIX/bin/x86_64-linux-musl-gfortran
+lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-gcc > $PREFIX/bin/$ARCH-linux-musl-gcc
+lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-g++ > $PREFIX/bin/$ARCH-linux-musl-g++
+lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-gfortran > $PREFIX/bin/$ARCH-linux-musl-gfortran
+chmod +x $PREFIX/bin/$ARCH-linux-musl-gcc
+chmod +x $PREFIX/bin/$ARCH-linux-musl-g++
+chmod +x $PREFIX/bin/$ARCH-linux-musl-gfortran
 
 # install musl headers
 
 cd ../musl-1.2.4
 make clean
-CC=$PREFIX/bin/x86_64-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/x86_64-linux-musl/lib --libdir=$PREFIX/lib/gcc/x86_64-linux-musl/13.2.0 --includedir=$PREFIX/x86_64-linux-musl/include
+CC=$PREFIX/bin/$ARCH-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-linux-musl/lib --libdir=$PREFIX/lib/gcc/$ARCH-linux-musl/13.2.0 --includedir=$PREFIX/$ARCH-linux-musl/include
 # first install musl headers
 make install-headers
 
@@ -57,7 +57,7 @@ cd musl-1.2.4
 
 make clean
 
-CC=$PREFIX/bin/x86_64-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/x86_64-linux-musl/lib --libdir=$PREFIX/lib/gcc/x86_64-linux-musl/13.2.0 --includedir=$PREFIX/x86_64-linux-musl/include --disable-shared
+CC=$PREFIX/bin/$ARCH-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-linux-musl/lib --libdir=$PREFIX/lib/gcc/$ARCH-linux-musl/13.2.0 --includedir=$PREFIX/$ARCH-linux-musl/include --disable-shared
 
 # now we can build libc (requires libgcc)
 make
@@ -67,7 +67,7 @@ make install
 
 cd ../build-gcc
 
-cp -r $PREFIX/lib/gcc/x86_64-linux-musl/13.2.0/* gcc
+cp -r $PREFIX/lib/gcc/$ARCH-linux-musl/13.2.0/* gcc
 
 # now build libstdc++ (requires libc and libgcc)
 make all-target-libstdc++-v3
@@ -75,8 +75,8 @@ make install-target-libstdc++-v3
 
 # add linux/limits.h
 
-mkdir -p $PREFIX/x86_64-linux-musl/include/linux
-cp /usr/include/linux/limits.h $PREFIX/x86_64-linux-musl/include/linux
+mkdir -p $PREFIX/$ARCH-linux-musl/include/linux
+cp /usr/include/linux/limits.h $PREFIX/$ARCH-linux-musl/include/linux
 
 # now build libgfortran
 

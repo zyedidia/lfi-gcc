@@ -1,0 +1,4 @@
+#!/bin/sh
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+export LFIARCH=arm64
+lfi-as -flfi-as $DIR/internal-as "$@"

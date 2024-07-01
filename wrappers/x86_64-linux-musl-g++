@@ -1,3 +1,0 @@
-#!/bin/sh
-DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-$DIR/internal-x86_64-linux-musl-g++ -ftls-model=local-exec -falign-labels=16 -falign-functions=16 -ffixed-r15 -ffixed-r14 -fPIC -fno-plt -static-pie -z separate-code "$@"
