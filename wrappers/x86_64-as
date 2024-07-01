@@ -1,3 +1,4 @@
 #!/bin/sh
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-lfi-as -flfi-as $DIR/internal-aarch64_lfi-none-elf-as "$@"
+export LFIARCH=amd64
+lfi-as -flfi-as $DIR/internal-as "$@"
