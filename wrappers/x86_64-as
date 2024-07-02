@@ -1,4 +1,0 @@
-#!/bin/sh
-DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-export LFIARCH=amd64
-lfi-as -flfi-as $DIR/internal-as "$@"

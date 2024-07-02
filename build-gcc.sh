@@ -5,8 +5,6 @@
 set -ex
 
 PREFIX=$1
-export CFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
-export CXXFLAGS_FOR_TARGET="$(lfi-wrap -flags -toolchain=gcc)"
 
 mkdir -p build-gcc
 cd build-gcc
@@ -24,16 +22,11 @@ cd build-gcc
 make all-gcc
 make install-strip-gcc
 
-mv $PREFIX/bin/$ARCH-linux-musl-gcc $PREFIX/bin/internal-$ARCH-linux-musl-gcc
-mv $PREFIX/bin/$ARCH-linux-musl-g++ $PREFIX/bin/internal-$ARCH-linux-musl-g++
-mv $PREFIX/bin/$ARCH-linux-musl-gfortran $PREFIX/bin/internal-$ARCH-linux-musl-gfortran
+mkdir -p lib/gcc
+go run ../specgen.go > lib/gcc/specs
 
-lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-gcc > $PREFIX/bin/$ARCH-linux-musl-gcc
-lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-g++ > $PREFIX/bin/$ARCH-linux-musl-g++
-lfi-wrap -toolchain=gcc -compiler=$ARCH-linux-musl-gfortran > $PREFIX/bin/$ARCH-linux-musl-gfortran
-chmod +x $PREFIX/bin/$ARCH-linux-musl-gcc
-chmod +x $PREFIX/bin/$ARCH-linux-musl-g++
-chmod +x $PREFIX/bin/$ARCH-linux-musl-gfortran
+mkdir -p $PREFIX/$ARCH-linux-musl/lib
+go run ../specgen.go > $PREFIX/$ARCH-linux-musl/lib/specs
 
 # install musl headers
 
@@ -79,10 +72,6 @@ mkdir -p $PREFIX/$ARCH-linux-musl/include/linux
 cp /usr/include/linux/limits.h $PREFIX/$ARCH-linux-musl/include/linux
 
 # now build libgfortran
-
-mv ./gcc/gfortran ./gcc/internal-gfortran
-lfi-wrap -toolchain=gcc -compiler=gfortran > ./gcc/gfortran
-chmod +x ./gcc/gfortran
 
 make all-target-libgfortran
 make install-target-libgfortran
