@@ -24,6 +24,7 @@ make install-strip-gcc
 
 mkdir -p lib/gcc
 ../specgen.sh > lib/gcc/specs
+../specgen.sh > gcc/specs
 
 mkdir -p $PREFIX/$ARCH-linux-musl/lib
 ../specgen.sh > $PREFIX/$ARCH-linux-musl/lib/specs

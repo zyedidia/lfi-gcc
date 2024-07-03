@@ -17,5 +17,8 @@ cat << EOM
  lfi-leg $LFIFLAGS -a $LFIARCH %m.s | as %(asm_options) %A }  }
 
 *cc1:
-+ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS)
++ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC -fno-plt
+
+*self_spec:
+%{!shared:%{!static:%{!static-pie:-static-pie}}}
 EOM
