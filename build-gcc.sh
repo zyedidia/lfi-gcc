@@ -23,10 +23,10 @@ make all-gcc
 make install-strip-gcc
 
 mkdir -p lib/gcc
-go run ../specgen.go > lib/gcc/specs
+../specgen.sh > lib/gcc/specs
 
 mkdir -p $PREFIX/$ARCH-linux-musl/lib
-go run ../specgen.go > $PREFIX/$ARCH-linux-musl/lib/specs
+../specgen.sh > $PREFIX/$ARCH-linux-musl/lib/specs
 
 # install musl headers
 
