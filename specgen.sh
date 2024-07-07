@@ -27,5 +27,5 @@ cat << EOM
 + -z separate-code
 
 *self_spec:
-%{!shared:%{!static:%{!static-pie:-static-pie}}}
+%{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec
 EOM
