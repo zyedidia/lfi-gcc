@@ -46,6 +46,8 @@ make install-target-libgcc
 cd ..
 
 cp musl-custom/getopt.c musl-1.2.4/src/misc/getopt.c
+cp musl-custom/crti.s musl-1.2.4/crt/aarch64/crti.s
+cp musl-custom/memset.S musl-1.2.4/src/string/aarch64/memset.S
 
 cd musl-1.2.4
 
