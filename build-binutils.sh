@@ -14,7 +14,7 @@ cd build-binutils
     --disable-multilib \
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
-make
+make -j$(nproc --all)
 make install-strip
 
 cd ..

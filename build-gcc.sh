@@ -19,7 +19,7 @@ cd build-gcc
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
 
-make all-gcc
+make all-gcc -j$(nproc --all)
 make install-strip-gcc
 
 mkdir -p lib/gcc
@@ -40,7 +40,7 @@ make install-headers
 cd ../build-gcc
 
 # now we can build libgcc (requires libc headers)
-make all-target-libgcc
+make all-target-libgcc -j$(nproc --all)
 make install-target-libgcc
 
 cd ..
@@ -56,7 +56,7 @@ make clean
 CC=$PREFIX/bin/$ARCH-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-linux-musl/lib --libdir=$PREFIX/lib/gcc/$ARCH-linux-musl/13.2.0 --includedir=$PREFIX/$ARCH-linux-musl/include --disable-shared
 
 # now we can build libc (requires libgcc)
-make
+make -j$(nproc --all)
 make install
 
 # copy musl installation to build-gcc/gcc
@@ -66,7 +66,7 @@ cd ../build-gcc
 cp -r $PREFIX/lib/gcc/$ARCH-linux-musl/13.2.0/* gcc
 
 # now build libstdc++ (requires libc and libgcc)
-make all-target-libstdc++-v3
+make all-target-libstdc++-v3 -j$(nproc --all)
 make install-target-libstdc++-v3
 
 # add linux/limits.h
@@ -76,5 +76,5 @@ cp /usr/include/linux/limits.h $PREFIX/$ARCH-linux-musl/include/linux
 
 # now build libgfortran
 
-make all-target-libgfortran
+make all-target-libgfortran -j$(nproc --all)
 make install-target-libgfortran

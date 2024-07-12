@@ -1,0 +1,61 @@
+diff --git a/binutils/gas/frags.c b/binutils/gas/frags.c
+index 820763de..57fb8758 100644
+--- a/binutils/gas/frags.c
++++ b/binutils/gas/frags.c
+@@ -372,6 +372,21 @@ frag_align_pattern (int alignment, const char *fill_pattern,
+ # endif
+ #endif
+ 
++void
++frag_init_bundle (int alignment, int max)
++{
++  char *p;
++
++  /* Bundles should be initialized with an alignment of 0 since
++     alignment will be set when the bundle is finished, but they
++     should still initialize max_chars so that when nops are generated,
++     efficient multi-byte encodings are used. */
++  p = frag_var (rs_align_code, MAX_MEM_FOR_RS_ALIGN_CODE, 1,
++		(relax_substateT) max, (symbolS *) 0,
++		(offsetT) 0, (char *) 0);
++  *p = NOP_OPCODE;
++}
++
+ void
+ frag_align_code (int alignment, int max)
+ {
+diff --git a/binutils/gas/frags.h b/binutils/gas/frags.h
+index a7343ce3..1b36939c 100644
+--- a/binutils/gas/frags.h
++++ b/binutils/gas/frags.h
+@@ -130,6 +130,7 @@ char *frag_more (size_t nchars);
+ void frag_align (int alignment, int fill_character, int max);
+ void frag_align_pattern (int alignment, const char *fill_pattern,
+ 			 size_t n_fill, int max);
++void frag_init_bundle (int alignment, int max);
+ void frag_align_code (int alignment, int max);
+ void frag_new (size_t old_frags_var_max_size);
+ void frag_wane (fragS * fragP);
+diff --git a/binutils/gas/read.c b/binutils/gas/read.c
+index 40a91f48..bc94e1bc 100644
+--- a/binutils/gas/read.c
++++ b/binutils/gas/read.c
+@@ -679,7 +679,7 @@ start_bundle (void)
+ {
+   fragS *frag = frag_now;
+ 
+-  frag_align_code (0, 0);
++  frag_init_bundle (bundle_align_p2, 0);
+ 
+   while (frag->fr_type != rs_align_code)
+     frag = frag->fr_next;
+@@ -734,7 +734,7 @@ finish_bundle (fragS *frag, unsigned int size)
+     {
+       /* If there is more than a single byte, then we need to set up the
+ 	 alignment frag.  Otherwise we leave it at its initial state from
+-	 calling frag_align_code (0, 0), so that it does nothing.  */
++	 calling frag_init_bundle, so that it does nothing.  */
+       frag->fr_offset = bundle_align_p2;
+       frag->fr_subtype = size - 1;
+     }
+
