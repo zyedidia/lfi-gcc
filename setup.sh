@@ -10,7 +10,7 @@ sed -i -e 's/aarch64-\*-\*/aarch64-*-* | aarch64_lfi-*-*/g' gcc/libstdc++-v3/con
 patch -p0 < aarch64.cc.patch
 patch -p0 < aarch64.cc.2.patch
 patch -p0 < aarch64-elf.h.patch
-patch -p0 < gas-bundle.patch
+patch -p1 < gas-bundle.patch
 
 cd gcc
 ./contrib/download_prerequisites
