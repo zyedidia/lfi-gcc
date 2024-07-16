@@ -6,6 +6,10 @@ then
 elif [ "$ARCH" = "aarch64_lfi" ] || [ "$ARCH" = "aarch64" ]
 then
     LFIARCH=arm64
+elif [ "$ARCH" = "riscv64" ]
+then
+    LFIARCH=riscv64
+    RVSPEC="%{!march:-march=rv64g_zba}"
 fi
 
 cat << EOM
@@ -27,5 +31,5 @@ cat << EOM
 + -z separate-code
 
 *self_spec:
-%{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec
+%{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec $RVSPEC
 EOM
