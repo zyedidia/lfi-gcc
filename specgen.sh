@@ -34,6 +34,6 @@ cat << EOM
 %{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec $RVSPEC
 
 *post_link:
-lfi-postlink %{o*:%*;:a.out}
+lfi-postlink %{o*:%*;:a.out} -a $LFIARCH $(lfi-leg -a $LFIARCH --flags=postlink $LFIFLAGS)
 EOM
 
