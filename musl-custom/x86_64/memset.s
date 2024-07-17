@@ -47,25 +47,25 @@ memset:
 	mov %rax,(-1-2-4-8-16-16)(%rdi,%rdx)
 	mov %rax,(-1-2-4-8-16-8)(%rdi,%rdx)
 
-.p2align 5
+.bundle_align
 1:	mov %rdi,%rax
 	ret
 
-.p2align 5
+.bundle_align
 2:	test $15,%edi
 	mov %rdi,%r8
 	mov %rax,-8(%rdi,%rdx)
 	mov %rdx,%rcx
 	jnz 2f
 
-.p2align 5
+.bundle_align
 1:	shr $3,%rcx
 	rep
 	stosq
 	mov %r8,%rax
 	ret
 
-.p2align 5
+.bundle_align
 2:	xor %edx,%edx
 	sub %edi,%edx
 	and $15,%edx

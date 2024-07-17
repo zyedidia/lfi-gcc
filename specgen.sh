@@ -32,4 +32,8 @@ cat << EOM
 
 *self_spec:
 %{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec $RVSPEC
+
+*post_link:
+lfi-postlink %{o*:%*;:a.out}
 EOM
+

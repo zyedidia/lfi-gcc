@@ -9,21 +9,21 @@ __memcpy_fwd:
 	jc 1f
 	test $7,%edi
 	jz 1f
-.p2align 5
+.bundle_align
 2:	movsb
 	dec %rdx
 	test $7,%edi
 	jnz 2b
-.p2align 5
+.bundle_align
 1:	mov %rdx,%rcx
 	shr $3,%rcx
 	rep
 	movsq
 	and $7,%edx
 	jz 1f
-.p2align 5
+.bundle_align
 2:	movsb
 	dec %edx
 	jnz 2b
-.p2align 5
+.bundle_align
 1:	ret
