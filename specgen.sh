@@ -1,8 +1,11 @@
 #!/bin/sh
 
+CC1FLAGS=
+
 if [ "$ARCH" = "x86_64" ]
 then
     LFIARCH=amd64
+    CC1FLAGS="-fno-plt"
 elif [ "$ARCH" = "aarch64_lfi" ] || [ "$ARCH" = "aarch64" ]
 then
     LFIARCH=arm64
@@ -25,7 +28,7 @@ cat << EOM
  lfi-leg $LFIFLAGS -a $LFIARCH %m.s | as %(asm_options) %A }  }
 
 *cc1:
-+ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC -fno-plt
++ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC $CC1FLAGS
 
 *link:
 + -z separate-code
