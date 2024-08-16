@@ -8,7 +8,7 @@ PREFIX=$1
 
 mkdir -p build-binutils
 cd build-binutils
-../binutils/configure --target=$ARCH-linux-musl \
+../binutils/configure --target=$ARCH-lfi-linux-musl \
     --disable-docs \
     --disable-nls \
     --disable-multilib \
