@@ -34,7 +34,7 @@ cat << EOM
 + -z separate-code
 
 *self_spec:
-%{!shared:%{!static:%{!static-pie:-static-pie}}} -ftls-model=local-exec $RVSPEC
+%{!pie:%{!static:%{!static-pie:-static-pie}}} -ftls-model=initial-exec $RVSPEC
 
 *post_link:
 lfi-postlink %{o*:%*;:a.out} -a $LFIARCH $(lfi-leg -a $LFIARCH --flags=postlink $LFIFLAGS)

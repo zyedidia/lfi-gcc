@@ -13,8 +13,7 @@ cd build-gcc
     --disable-bootstrap \
     --disable-libssp \
     --disable-multilib \
-    --disable-shared \
-    --enable-languages=c,c++,fortran \
+    --enable-languages=c,c++ \
     --enable-lto \
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
@@ -33,9 +32,13 @@ mkdir -p $PREFIX/$ARCH-lfi-linux-musl/lib
 
 cd ../musl-1.2.4
 make clean
-CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-lfi-linux-musl/lib --libdir=$PREFIX/lib/gcc/$ARCH-lfi-linux-musl/13.2.0 --includedir=$PREFIX/$ARCH-lfi-linux-musl/include
+CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-lfi-linux-musl/lib --libdir=$PREFIX/$ARCH-lfi-linux-musl/lib --includedir=$PREFIX/$ARCH-lfi-linux-musl/include
 # first install musl headers
 make install-headers
+# install crt start files and a dummy libc.so
+make lib/crt1.o lib/crti.o lib/crtn.o
+install lib/crt1.o lib/crti.o lib/crtn.o $PREFIX/$ARCH-lfi-linux-musl/lib
+$PREFIX/bin/$ARCH-lfi-linux-musl-gcc -nostdlib -nostartfiles -shared -x c /dev/null -o $PREFIX/$ARCH-lfi-linux-musl/lib/libc.so
 
 cd ../build-gcc
 
@@ -56,7 +59,7 @@ cd musl-1.2.4
 
 make clean
 
-CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-lfi-linux-musl/lib --libdir=$PREFIX/lib/gcc/$ARCH-lfi-linux-musl/13.2.0 --includedir=$PREFIX/$ARCH-lfi-linux-musl/include
+CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-lfi-linux-musl/lib --libdir=$PREFIX/$ARCH-lfi-linux-musl/lib --includedir=$PREFIX/$ARCH-lfi-linux-musl/include --disable-gcc-wrapper
 
 # now we can build libc (requires libgcc)
 make -j$(nproc --all)
@@ -79,5 +82,5 @@ cp /usr/include/linux/limits.h $PREFIX/$ARCH-lfi-linux-musl/include/linux
 
 # now build libgfortran
 
-make all-target-libgfortran -j$(nproc --all)
-make install-target-libgfortran
+# make all-target-libgfortran -j$(nproc --all)
+# make install-target-libgfortran
