@@ -15,6 +15,7 @@ cd build-gcc
     --disable-multilib \
     --enable-languages=c,c++ \
     --enable-lto \
+    --enable-default-pie \
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
 
