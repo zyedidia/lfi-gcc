@@ -1,11 +1,8 @@
 #!/bin/sh
 
-CC1FLAGS=
-
 if [ "$ARCH" = "x86_64" ]
 then
     LFIARCH=amd64
-    CC1FLAGS="-fno-plt"
 elif [ "$ARCH" = "aarch64_lfi" ] || [ "$ARCH" = "aarch64" ]
 then
     LFIARCH=arm64
@@ -28,13 +25,13 @@ cat << EOM
  lfi-leg $LFIFLAGS -a $LFIARCH %m.s | as %(asm_options) %A }  }
 
 *cc1:
-+ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC $CC1FLAGS
++ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC -fno-plt
 
 *link:
 + -z separate-code
 
 *self_spec:
-%{!pie:%{!static:%{!static-pie:-static-pie}}} -ftls-model=initial-exec $RVSPEC
+-ftls-model=initial-exec $RVSPEC
 
 *post_link:
 lfi-postlink %{o*:%*;:a.out} -a $LFIARCH $(lfi-leg -a $LFIARCH --flags=postlink $LFIFLAGS)

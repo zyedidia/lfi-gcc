@@ -15,6 +15,7 @@ cd build-gcc
     --disable-multilib \
     --enable-languages=c,c++ \
     --enable-lto \
+    --enable-shared \
     --enable-default-pie \
     --prefix=$PREFIX \
     --with-pkgversion="LFI"
@@ -65,6 +66,10 @@ CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir
 # now we can build libc (requires libgcc)
 make -j$(nproc --all)
 make install
+
+# make the linker symlink relative so that if we move PREFIX around it doesn't break
+rm $PREFIX/lib/$ARCH-lfi-linux-musl/ld-musl-$ARCH.so.1
+ln -s libc.so $PREFIX/lib/$ARCH-lfi-linux-musl/ld-musl-$ARCH.so.1
 
 # copy musl installation to build-gcc/gcc
 
