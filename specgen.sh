@@ -25,13 +25,13 @@ cat << EOM
  lfi-leg $LFIFLAGS -a $LFIARCH %m.s | as %(asm_options) %A }  }
 
 *cc1:
-+ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC -fno-plt
++ $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC $CC1FLAGS
 
 *link:
-+ -z separate-code
++ -z separate-code -z now
 
 *self_spec:
--ftls-model=initial-exec $RVSPEC
+$RVSPEC
 
 *post_link:
 lfi-postlink %{o*:%*;:a.out} -a $LFIARCH $(lfi-leg -a $LFIARCH --flags=postlink $LFIFLAGS)
