@@ -68,8 +68,8 @@ make -j$(nproc --all)
 make install
 
 # make the linker symlink relative so that if we move PREFIX around it doesn't break
-rm $PREFIX/lib/$ARCH-lfi-linux-musl/ld-musl-$ARCH.so.1
-ln -s libc.so $PREFIX/lib/$ARCH-lfi-linux-musl/ld-musl-$ARCH.so.1
+rm $PREFIX/$ARCH-lfi-linux-musl/lib/ld-musl-$ARCH.so.1
+ln -s libc.so $PREFIX/$ARCH-lfi-linux-musl/lib/ld-musl-$ARCH.so.1
 
 # copy musl installation to build-gcc/gcc
 
