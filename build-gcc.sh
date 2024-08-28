@@ -32,7 +32,7 @@ mkdir -p $PREFIX/$ARCH-lfi-linux-musl/lib
 
 # install musl headers
 
-cd ../musl-1.2.4
+cd ../musl
 make clean
 CC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc ./configure --prefix=$PREFIX --syslibdir=$PREFIX/$ARCH-lfi-linux-musl/lib --libdir=$PREFIX/$ARCH-lfi-linux-musl/lib --includedir=$PREFIX/$ARCH-lfi-linux-musl/include
 # first install musl headers
@@ -48,16 +48,7 @@ cd ../build-gcc
 make all-target-libgcc -j$(nproc --all)
 make install-target-libgcc
 
-cd ..
-
-cp musl-custom/getopt.c musl-1.2.4/src/misc/getopt.c
-cp musl-custom/crti.s musl-1.2.4/crt/aarch64/crti.s
-cp musl-custom/memset.S musl-1.2.4/src/string/aarch64/memset.S
-
-cp musl-custom/x86_64/memset.s musl-1.2.4/src/string/x86_64/memset.s
-cp musl-custom/x86_64/memcpy.s musl-1.2.4/src/string/x86_64/memcpy.s
-
-cd musl-1.2.4
+cd ../musl
 
 make clean
 
