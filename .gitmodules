@@ -1,3 +1,6 @@
 [submodule "musl"]
 	path = musl
 	url = https://github.com/zyedidia/musl
+[submodule "gcc"]
+	path = gcc
+	url = https://github.com/zyedidia/gcc

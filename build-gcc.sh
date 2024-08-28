@@ -5,6 +5,7 @@
 set -ex
 
 PREFIX=$1
+GCC_VERSION=14.2.0
 
 mkdir -p build-gcc
 cd build-gcc
@@ -66,7 +67,7 @@ ln -s libc.so $PREFIX/$ARCH-lfi-linux-musl/lib/ld-musl-$ARCH.so.1
 
 cd ../build-gcc
 
-cp -r $PREFIX/lib/gcc/$ARCH-lfi-linux-musl/13.2.0/* gcc
+cp -r $PREFIX/lib/gcc/$ARCH-lfi-linux-musl/$GCC_VERSION/* gcc
 
 # now build libstdc++ (requires libc and libgcc)
 make all-target-libstdc++-v3 -j$(nproc --all)

@@ -1,9 +1,8 @@
 *.tar.gz
-/musl-*
 !/musl-custom
-/gcc
-/binutils
 /build-gcc
 /build-binutils
 *-toolchain
 /a.out
+/lfi-*
+/binutils

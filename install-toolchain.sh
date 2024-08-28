@@ -8,7 +8,7 @@ PREFIX=$1
 
 export ARCH=$2
 
-if [ ! -d gcc ]; then
+if [ ! -d binutils ]; then
     ./download.sh
     ./setup.sh
 fi
