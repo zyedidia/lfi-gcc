@@ -9,5 +9,5 @@ tar -xf $BINUTILS.tar.xz
 mv $BINUTILS binutils
 rm $BINUTILS.tar.xz
 
-# gcc
-git submodule update --init
+# gcc and musl
+git submodule update --init --depth 1
