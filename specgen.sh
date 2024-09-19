@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# usage: ./specgen.sh GCC_PATH
+
+DUMPSPEC=$($1 -dumpspecs)
+
 if [ "$ARCH" = "x86_64" ]
 then
     LFIARCH=amd64
@@ -13,6 +17,8 @@ then
 fi
 
 cat << EOM
+$DUMPSPEC
+
 @assembler:
 %{!M:%{!MM:%{!E:%{!S:lfi-leg $LFIFLAGS -a $LFIARCH %i | as %(asm_debug) %(asm_options) %A }}}}
 
@@ -24,11 +30,14 @@ cat << EOM
 %{!fwpa*:   %{fcompare-debug=*|fdump-final-insns=*:%:compare-debug-dump-opt()}   %{!S:-o %|.s |
  lfi-leg $LFIFLAGS -a $LFIARCH %m.s | as %(asm_options) %A }  }
 
+*cpp:
++ -D__LFI__
+
 *cc1:
 + $(lfi-leg -a $LFIARCH --flags=gcc $LFIFLAGS) -fPIC $CC1FLAGS
 
 *link:
-+ -z separate-code -z now
+%{!static|static-pie:--eh-frame-hdr} %{!mandroid|tno-android-ld:%{shared:-shared}   %{!shared:     %{!static:       %{!static-pie: 	%{rdynamic:-export-dynamic} -dynamic-linker %:getenv(GCC_EXEC_PREFIX ../../$ARCH-lfi-linux-musl/lib/ld-musl-$ARCH.so.1)}}     %{static:-static} %{static-pie:-static -pie --no-dynamic-linker -z text}};:%{shared:-shared} %{!shared: %{!static: %{!static-pie:	%{rdynamic:-export-dynamic}	-dynamic-linker %:getenv(GCC_EXEC_PREFIX ../../$ARCH-lfi-linux-musl/lib/ld-musl-$ARCH.so.1}}     %{static:-static} %{static-pie:-static -pie --no-dynamic-linker -z text}} %{shared: -Bsymbolic}} -z separate-code -z now
 
 *self_spec:
 $RVSPEC

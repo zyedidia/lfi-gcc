@@ -24,12 +24,14 @@ cd build-gcc
 make all-gcc -j$(nproc --all)
 make install-strip-gcc
 
+GCC=$PREFIX/bin/$ARCH-lfi-linux-musl-gcc
+
 mkdir -p lib/gcc
-../specgen.sh > lib/gcc/specs
-../specgen.sh > gcc/specs
+../specgen.sh $GCC > lib/gcc/specs
+../specgen.sh $GCC > gcc/specs
 
 mkdir -p $PREFIX/$ARCH-lfi-linux-musl/lib
-../specgen.sh > $PREFIX/$ARCH-lfi-linux-musl/lib/specs
+../specgen.sh $GCC > $PREFIX/$ARCH-lfi-linux-musl/lib/specs
 
 # install musl headers
 
